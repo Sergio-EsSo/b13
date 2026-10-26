@@ -4,12 +4,13 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.CalendarView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import java.text.SimpleDateFormat
-import java.util.Date
+import java.util.Calendar
 
 class MainActivity : AppCompatActivity() {
 
@@ -42,13 +43,23 @@ class MainActivity : AppCompatActivity() {
             val fechaBuscadaStr = fechaBuscada.text.toString();
             val partes = fechaBuscadaStr.split("/")
             if(partes.size==3){
-                val dia = partes[0].toInt();
-                val mes = partes[1].toInt()-1; //en java los meses van de 0 a 11
-                val anio = partes[2].toInt();
-            }
-            //con dia mes y anio seteo el calendario
+                try {
+                    val dia = partes[0].toInt();
+                    val mes = partes[1].toInt() - 1; //en java los meses van de 0 a 11
+                    val anio = partes[2].toInt();
 
-            val fechaBuscada = SimpleDateFormat("dd/MM/yyyy", locale.getDefault)
+                    val cal = Calendar.getInstance();
+                    cal.set(anio, mes, dia);
+
+                    calendario.date = cal.timeInMillis;
+                }
+                catch (e: Exception){
+                    Toast.makeText(this, "Introduce una fecha buena, HOSTIA", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else{
+                Toast.makeText(this, "Formato MALO, HOSTIA", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }
